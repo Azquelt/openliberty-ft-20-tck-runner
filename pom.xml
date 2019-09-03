@@ -10,7 +10,7 @@
     <dependency>
       <groupId>org.eclipse.microprofile.fault-tolerance</groupId>
       <artifactId>microprofile-fault-tolerance-tck</artifactId>
-      <version>2.0</version>
+      <version>2.0.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -22,7 +22,7 @@
     <dependency>
       <groupId>io.openliberty.arquillian</groupId>
       <artifactId>arquillian-liberty-managed</artifactId>
-      <version>1.0.3</version>
+      <version>1.0.6</version>
       <scope>test</scope>
     </dependency>
     <!-- Cannot upgrade due to https://github.com/cbeust/testng/issues/1677 -->
@@ -66,7 +66,7 @@
         <executions>
           <execution>
             <id>copy-resources</id>
-            <phase>package</phase>
+            <phase>process-test-resources</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
@@ -80,6 +80,34 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <id>extract-support-feature</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <artifactItems>
+            <artifactItem>
+              <groupId>io.openliberty.arquillian</groupId>
+              <artifactId>arquillian-liberty-support</artifactId>
+              <version>1.0.6</version>
+              <type>zip</type>
+              <classifier>feature</classifier>
+              <overWrite>false</overWrite>
+              <outputDirectory>${basedir}/wlp/usr</outputDirectory>
+            </artifactItem>
+          </artifactItems>
+        </configuration>
       </plugin>
 
     </plugins>
